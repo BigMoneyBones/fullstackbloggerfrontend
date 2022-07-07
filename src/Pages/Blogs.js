@@ -11,11 +11,11 @@ const BlogsPage = ({ blogs }) => {
   return (
     <div className="blogs-page">
       <h1>Blogs Page</h1>
-      <p>
+      <div>
         {blogs.map((blog) => {
           return <BlogPost blog={blog} key={blog.id} />;
         })}
-      </p>
+      </div>
     </div>
   );
 };

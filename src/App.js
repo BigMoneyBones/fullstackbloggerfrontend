@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 const urlEndpoint = "http://localhost:4000";
 
 function App() {
-  const [serverJSON, setServerJSON] = useState(null);
+  const [serverJSON, setServerJSON] = useState({ message: [] });
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -32,12 +32,10 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        {serverJSON && (
-          <Route
-            path="/blogs"
-            element={<BlogsPage blogs={serverJSON} />}
-          ></Route>
-        )}
+        <Route
+          path="/blogs"
+          element={<BlogsPage blogs={serverJSON.message} />}
+        ></Route>
       </Routes>
     </div>
   );
