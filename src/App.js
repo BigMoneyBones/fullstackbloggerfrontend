@@ -1,7 +1,9 @@
 import "./App.css";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 import BlogsPage from "./Pages/Blogs";
 import { useState, useEffect } from "react";
+import PostBlogPage from "./Pages/PostBlogPage";
 
 const urlEndpoint = "http://localhost:4000";
 
@@ -13,6 +15,19 @@ function App() {
   const [filterValue, setFilterValue] = useState("");
   const [limit, setLimit] = useState(Number());
   const [page, setPage] = useState(Number(1));
+
+  const blogSubmit = async (blog) => {
+    const url = urlEndpoint + "/blogs/blog-submit";
+    // const url = `${urlEndpoint}/blogs/blog-submit`;
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(blog),
+    });
+    const responseJSON = await response.json();
+  };
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -48,28 +63,34 @@ function App() {
 
   return (
     <div className="App">
-      <Routes>
-        <Route
-          path="/blogs"
-          element={
-            <BlogsPage
-              blogs={serverJSON.message}
-              sortField={sortField}
-              setSortField={setSortField}
-              sortOrder={sortOrder}
-              setSortOrder={setSortOrder}
-              filterField={filterField}
-              setFilterField={setFilterField}
-              filterValue={filterValue}
-              setFilterValue={setFilterValue}
-              limit={limit}
-              setLimit={setLimit}
-              page={page}
-              setPage={setPage}
-            />
-          }
-        ></Route>
-      </Routes>
+      <header>
+        <Routes>
+          <Route
+            index
+            element={
+              <BlogsPage
+                blogs={serverJSON.message}
+                sortField={sortField}
+                setSortField={setSortField}
+                sortOrder={sortOrder}
+                setSortOrder={setSortOrder}
+                filterField={filterField}
+                setFilterField={setFilterField}
+                filterValue={filterValue}
+                setFilterValue={setFilterValue}
+                limit={limit}
+                setLimit={setLimit}
+                page={page}
+                setPage={setPage}
+              />
+            }
+          />
+          <Route
+            path="/post-blog"
+            element={<PostBlogPage blogSubmit={blogSubmit} />}
+          />
+        </Routes>
+      </header>
     </div>
   );
 }
