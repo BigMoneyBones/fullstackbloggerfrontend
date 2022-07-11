@@ -9,12 +9,13 @@ const urlEndpoint = "http://localhost:4000";
 
 function App() {
   const [serverJSON, setServerJSON] = useState({ message: [] });
-  const [sortField, setSortField] = useState("title");
-  const [sortOrder, setSortOrder] = useState("ASC");
+  const [sortField, setSortField] = useState("id");
+  const [sortOrder, setSortOrder] = useState("DESC");
   const [filterField, setFilterField] = useState("title");
   const [filterValue, setFilterValue] = useState("");
   const [limit, setLimit] = useState(Number());
   const [page, setPage] = useState(Number(1));
+  const [isFetching, setIsFetching] = useState(false);
 
   const blogSubmit = async (blog) => {
     const url = urlEndpoint + "/blogs/blog-submit";
@@ -27,6 +28,7 @@ function App() {
       body: JSON.stringify(blog),
     });
     const responseJSON = await response.json();
+    return responseJSON;
   };
 
   // useEffect(() => {
@@ -59,7 +61,7 @@ function App() {
       return;
     };
     fetchData();
-  }, [sortField, sortOrder, filterField, filterValue, limit, page]);
+  }, [sortField, sortOrder, filterField, filterValue, limit, page, isFetching]);
 
   return (
     <div className="App">
@@ -87,7 +89,12 @@ function App() {
           />
           <Route
             path="/post-blog"
-            element={<PostBlogPage blogSubmit={blogSubmit} />}
+            element={
+              <PostBlogPage
+                blogSubmit={blogSubmit}
+                setIsFetching={setIsFetching}
+              />
+            }
           />
         </Routes>
       </header>
